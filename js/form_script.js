@@ -1,3 +1,4 @@
+let isUpdate = false;
 let addressBookContactJSONObject = {};
 
 window.addEventListener('DOMContentLoaded', (event) => {
@@ -51,6 +52,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
             }
         }
     });
+
+    checkForUpdate();
 });
 
 const save = (event) => {
@@ -130,6 +133,15 @@ const createNewContactId = () => {
     return contactId;
 }
 
+const setForm = () => {
+    setValue("#full-name", addressBookContactJSONObject._fullName);
+    setValue("#tel", addressBookContactJSONObject._phoneNumber);
+    setValue("#address", addressBookContactJSONObject._address);
+    setValue("#city", addressBookContactJSONObject._city);
+    setValue("#state", addressBookContactJSONObject._state);
+    setValue("#zip", addressBookContactJSONObject._zip);
+};
+
 const resetForm = () => {
     setValue("#full-name", "");
     setTextContent(".full-name-error", "");
@@ -163,4 +175,12 @@ const getValue = (propertyId) => {
 const setTextContent = (propertyId, value) => {
     const contentElement = document.querySelector(propertyId);
     contentElement.textContent = value;
+};
+
+const checkForUpdate = () => {
+    const personToEditJson = localStorage.getItem("PersonToEdit");
+    isUpdate = personToEditJson ? true : false;
+    if (!isUpdate) return;
+    addressBookContactJSONObject = JSON.parse(personToEditJson);
+    setForm();
 };
